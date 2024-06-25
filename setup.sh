@@ -13,9 +13,10 @@ if [ "$EUID" -ne 0 ]; then
   exit
 fi
 
-# Copy the collect_services.sh script
+# Copy source files to /opt and grant necessary permissions
 cp -r $FLASK_APP_DIR "$SERVICE_MONITOR_DIR"
-chmod +x "$SERVICE_MONITOR_DIR/sentinela"
+chmod +x "$SERVICE_MONITOR_DIR/sentinela/collector.sh"
+chmod +x "$SERVICE_MONITOR_DIR/sentinela/app.py"
 cd $SERVICE_MONITOR_DIR/sentinela
 
 # Create a virtual environment
