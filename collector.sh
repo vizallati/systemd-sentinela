@@ -2,7 +2,7 @@
 
 
 OUTPUT_DIR="/opt/sentinela"
-OUTPUT_FILE="${OUTPUT_DIR}/sentinela/data.json"
+OUTPUT_FILE="${OUTPUT_DIR}/data.json"
 
 # Create the output directory if it doesn't exist
 if [ ! -d "$OUTPUT_DIR" ]; then
