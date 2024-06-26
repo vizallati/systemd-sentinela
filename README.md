@@ -1,2 +1,6 @@
-# sentinela
-ServiceMonitor is a comprehensive service monitoring tool designed to track and manage services running on Linux instances. It collects service data and publishes it to a given endpoint, which can later be used as a Grafana dashboard data source for easy visualization and analysis.
+# Installation
+1. Clone this repository to the target machine running on Ubuntu
+2. cd to cloned directory
+3. Run sudo chmod u+x install.sh
+4. Run sudo ./install.sh
+You're good to go! Metrics will be available on http//localhost:8000/metrics. To test connection to server when using as grafana data source use / endpoint
