@@ -17,7 +17,7 @@ fi
 cp -r $FLASK_APP_DIR "$SERVICE_MONITOR_DIR"
 chmod +x "$SERVICE_MONITOR_DIR/sentinela/collector.sh"
 chmod +x "$SERVICE_MONITOR_DIR/sentinela/app.py"
-chmod +x "$SERVICE_MONITOR_DIR/sentinela/uninstall.sh
+chmod +x "$SERVICE_MONITOR_DIR/sentinela/uninstall.sh"
 cd $SERVICE_MONITOR_DIR/sentinela
 
 # Create a virtual environment
