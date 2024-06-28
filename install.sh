@@ -4,8 +4,8 @@ set -e
 SERVICE_MONITOR_DIR="/opt"
 SERVICE_MONITOR_SCRIPT="${SERVICE_MONITOR_DIR}/sentinela/collector.sh"
 SERVICE_FILE="/etc/systemd/system/sentinela.service"
-FLASK_APP_DIR=$(pwd)
-echo "$FLASK_APP_DIR"
+#FLASK_APP_DIR=$(pwd)
+#echo "$FLASK_APP_DIR"
 
 # Check if the script is run as root
 if [ "$EUID" -ne 0 ]; then
@@ -14,20 +14,20 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 # Copy source files to /opt and grant necessary permissions
-cp -r $FLASK_APP_DIR "$SERVICE_MONITOR_DIR"
-chmod +x "$SERVICE_MONITOR_DIR/sentinela/collector.sh"
-chmod +x "$SERVICE_MONITOR_DIR/sentinela/app.py"
-chmod +x "$SERVICE_MONITOR_DIR/sentinela/uninstall.sh"
-cd $SERVICE_MONITOR_DIR/sentinela
+#cp -r $FLASK_APP_DIR "$SERVICE_MONITOR_DIR"
+chmod +x collector.sh
+chmod +x app.py
+chmod +x uninstall.sh
+#cd $SERVICE_MONITOR_DIR/sentinela
 
 # Create a virtual environment
 # Support other python versions
-apt install python3.10-venv -y
-python3 -m venv venv
-source venv/bin/activate
+#apt install python3.10-venv -y
+#python3 -m venv venv
+#source venv/bin/activate
 echo "Working directory is $PWD"
 # Install required Python packages
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 
 # Create the systemd service file
 cat <<EOL > $SERVICE_FILE
@@ -39,7 +39,7 @@ After=network.target
 User=$USER
 WorkingDirectory=$FLASK_APP_DIR
 ExecStartPre=$SERVICE_MONITOR_SCRIPT
-ExecStart=/opt/sentinela/venv/bin/python /opt/sentinela/app.py
+ExecStart=/usr/bin/python /opt/sentinela/app.py
 ExecReload=/bin/kill -s HUP $MAINPID
 RestartSec=2
 Restart=always
