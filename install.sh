@@ -1,11 +1,11 @@
 #!/bin/bash
 set -e
 # Define variables
-SERVICE_MONITOR_DIR="/opt"
-SERVICE_MONITOR_SCRIPT="${SERVICE_MONITOR_DIR}/sentinela/collector.sh"
+SERVICE_MONITOR_DIR="/opt/sentinela"
+SERVICE_MONITOR_SCRIPT="${SERVICE_MONITOR_DIR}/collector.sh"
 SERVICE_FILE="/etc/systemd/system/sentinela.service"
-#FLASK_APP_DIR=$(pwd)
-#echo "$FLASK_APP_DIR"
+CLONED_PROJECT_DIR=$(pwd)
+echo "Current working directory is: $CLONED_PROJECT_DIR"
 
 # Check if the script is run as root
 if [ "$EUID" -ne 0 ]; then
@@ -13,33 +13,25 @@ if [ "$EUID" -ne 0 ]; then
   exit
 fi
 
-# Copy source files to /opt and grant necessary permissions
-#cp -r $FLASK_APP_DIR "$SERVICE_MONITOR_DIR"
-chmod +x collector.sh
-chmod +x app.py
-chmod +x uninstall.sh
-#cd $SERVICE_MONITOR_DIR/sentinela
+setup_environment() {
+  mkdir $SERVICE_MONITOR_DIR
+  cp $CLONED_PROJECT_DIR/* "$SERVICE_MONITOR_DIR"
+  cd $SERVICE_MONITOR_DIR
+  chmod +x collector.sh app.py uninstall.sh
+  python3 -m pip install -r requirements.txt
+}
 
-# Create a virtual environment
-# Support other python versions
-#apt install python3.10-venv -y
-#python3 -m venv venv
-#source venv/bin/activate
-echo "Working directory is $PWD"
-# Install required Python packages
-python3 -m pip install -r requirements.txt
-
-# Create the systemd service file
-cat <<EOL > $SERVICE_FILE
+create_systemd_service_file () {
+  cat <<EOL > $SERVICE_FILE
 [Unit]
 Description=Service Monitor
 After=network.target
 
 [Service]
 User=$USER
-WorkingDirectory=$FLASK_APP_DIR
+WorkingDirectory=/opt/sentinela
 ExecStartPre=$SERVICE_MONITOR_SCRIPT
-ExecStart=/usr/bin/python /opt/sentinela/app.py
+ExecStart=/usr/bin/python3 /opt/sentinela/app.py
 ExecReload=/bin/kill -s HUP $MAINPID
 RestartSec=2
 Restart=always
@@ -47,11 +39,20 @@ Restart=always
 [Install]
 WantedBy=multi-user.target
 EOL
-
-# Reload systemd, enable and start the service
-systemctl daemon-reload
-systemctl enable sentinela.service
-systemctl start sentinela.service
-
 echo "Sentinela Monitoring Service Setup Completed Successfully!"
-echo "Server is running on http://localhost:8000"
+
+}
+
+start_service () {
+  echo "Starting Service..."
+  systemctl daemon-reload
+  systemctl enable sentinela.service
+  systemctl start sentinela.service
+  echo "Server is running on http://localhost:8000"
+}
+
+
+setup_environment
+create_systemd_service_file
+start_service
+
