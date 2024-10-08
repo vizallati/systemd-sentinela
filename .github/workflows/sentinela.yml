@@ -1,0 +1,15 @@
+on: pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Grant permissions to installation script
+        run: sudo chmod u+x install.sh
+      - name: Run installation script
+        run: sudo ./install.sh
+#      - name: Check metrics on server
+#        run: curl http://localhost:8000/metrics
+      - name: Verify systemd-sentinela service is installed
+        run: systemctl status sentinela
