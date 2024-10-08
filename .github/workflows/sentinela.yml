@@ -6,8 +6,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Checks installation script
-      - run: ls -la
+        run: ls -la
       - name: Grant permissions to necessary files
-      - run: chmod u+x
+        run: chmod u+x
       - name: Run installation script
-      - run: ./install.sh
+        run: ./install.sh
