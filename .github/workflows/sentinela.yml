@@ -6,4 +6,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Checks installation script
-        run: ls -la
+      - run: ls -la
+      - run: sudo chmod u+x
+      - run: sudo ./install.sh
