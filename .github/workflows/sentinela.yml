@@ -8,6 +8,6 @@ jobs:
       - name: Checks installation script
         run: ls -la
       - name: Grant permissions to necessary files
-        run: chmod u+x
+        run: chmod u+x install.sh
       - name: Run installation script
         run: ./install.sh
