@@ -10,4 +10,4 @@ jobs:
       - name: Grant permissions to necessary files
         run: chmod u+x install.sh
       - name: Run installation script
-        run: ./install.sh
+        run: sudo ./install.sh
