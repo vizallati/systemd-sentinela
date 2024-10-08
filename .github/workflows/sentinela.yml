@@ -7,5 +7,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Checks installation script
       - run: ls -la
-      - run: sudo chmod u+x
-      - run: sudo ./install.sh
+      - name: Grant permissions to necessary files
+      - run: chmod u+x
+      - name: Run installation script
+      - run: ./install.sh
